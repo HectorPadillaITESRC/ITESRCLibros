@@ -1,0 +1,6 @@
+@ITESRCLibrosAPI_HostAddress = http://localhost:5208
+
+GET {{ITESRCLibrosAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
