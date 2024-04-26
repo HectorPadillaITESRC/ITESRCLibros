@@ -2,17 +2,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ITESRCLibrosMAUI.Views.AgregarView"
-             Title="Agregar Libro">
+             xmlns:viewmodels="clr-namespace:ITESRCLibrosMAUI.ViewModels"
+             Title="Agregar Libro" x:DataType="viewmodels:LibrosViewModel">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Agregar"></ToolbarItem>
-        <ToolbarItem Text="Cancelar"></ToolbarItem>
+        <ToolbarItem Text="Agregar" Command="{Binding AgregarCommand}"></ToolbarItem>
+        <ToolbarItem Text="Cancelar" Command="{Binding CancelarCommand}"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <VerticalStackLayout Margin="10">
         <Label>Titulo:</Label>
-        <Entry></Entry>
+        <Entry Text="{Binding Libro.Titulo}"></Entry>
         <Label>Autor:</Label>
-        <Entry></Entry>
+        <Entry Text="{Binding Libro.Autor}"></Entry>
         <Label>URL Portada:</Label>
-        <Entry Keyboard="Url"></Entry>
+        <Entry Keyboard="Url" Text="{Binding Libro.Portada}"></Entry>
+
+        <Label Margin="5" HorizontalTextAlignment="Center" 
+               TextColor="Red" FontSize="Micro" Text="{Binding Error}"></Label>
+        
     </VerticalStackLayout>
 </ContentPage>

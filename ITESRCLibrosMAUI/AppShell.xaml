@@ -5,11 +5,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ITESRCLibrosMAUI"
     xmlns:views="clr-namespace:ITESRCLibrosMAUI.Views"
+    xmlns:viewmodels="clr-namespace:ITESRCLibrosMAUI.ViewModels"
     Shell.FlyoutBehavior="Disabled"
     Shell.BackgroundColor="Maroon"
     Shell.ForegroundColor="White"
     Shell.TitleColor="White"
     Title="ITESRCLibrosMAUI">
+
+
+    <Shell.BindingContext>
+        <viewmodels:LibrosViewModel></viewmodels:LibrosViewModel>
+    </Shell.BindingContext>
 
     <ShellContent
         ContentTemplate="{DataTemplate views:ListaView}"
