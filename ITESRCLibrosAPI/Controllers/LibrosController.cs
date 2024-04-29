@@ -58,7 +58,8 @@ namespace ITESRCLibrosAPI.Controllers
                     Titulo = x.Titulo,
                     Autor = x.Autor,
                     Eliminado = x.Eliminado,
-                    Portada = x.Portada
+                    Portada = x.Portada,
+                    Fecha = x.FechaActualizacion
                 });
 
             return Ok(libros);

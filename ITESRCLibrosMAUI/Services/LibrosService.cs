@@ -51,7 +51,10 @@ namespace ITESRCLibrosMAUI.Services
         {
             try
             {
-                var response = await cliente.GetFromJsonAsync<List<LibrosDTO>>("api/libros");
+                var fecha = Preferences.Get("UltimaFechaActualizacion", DateTime.MinValue);
+
+
+                var response = await cliente.GetFromJsonAsync<List<LibrosDTO>>($"api/libros/{fecha:yyyy-MM-dd}T{fecha:HH:mm:ss}");
                 if (response != null)
                 {
                     foreach (LibrosDTO libro in response)
@@ -86,6 +89,8 @@ namespace ITESRCLibrosMAUI.Services
 
 
                     }
+
+                    Preferences.Set("UltimaFechaActualizacion", response.Max(x => x.Fecha));
                 }
             }
             catch
