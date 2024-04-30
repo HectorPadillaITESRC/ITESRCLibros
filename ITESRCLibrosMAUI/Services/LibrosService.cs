@@ -29,7 +29,7 @@ namespace ITESRCLibrosMAUI.Services
         public async Task Agregar(LibrosDTO dto)
         {
             //    var json = JsonSerializer.Serialize(dto);
-            //    var response = await cliente.PostAsync("api/libros", new StringContent(json, Encoding.UTF8,
+            //    var response = await clchriente.PostAsync("api/libros", new StringContent(json, Encoding.UTF8,
             //        "application/json"));
 
 
@@ -47,14 +47,17 @@ namespace ITESRCLibrosMAUI.Services
 
         }
 
+        public event Action? DatosActualizados;
+
         public async Task GetLibros()
         {
             try
             {
                 var fecha = Preferences.Get("UltimaFechaActualizacion", DateTime.MinValue);
 
+                bool aviso = false;
 
-                var response = await cliente.GetFromJsonAsync<List<LibrosDTO>>($"api/libros/{fecha:yyyy-MM-dd}T{fecha:HH:mm:ss}");
+                var response = await cliente.GetFromJsonAsync<List<LibrosDTO>>($"api/libros/{fecha:yyyy-MM-dd}/{fecha:HH}/{fecha:mm}");
                 if (response != null)
                 {
                     foreach (LibrosDTO libro in response)
@@ -71,23 +74,39 @@ namespace ITESRCLibrosMAUI.Services
                                 Titulo = libro.Titulo
                             };
                             librosRepository.Insert(entidad);
+                            aviso = true;
                         }
                         else
                         {
                             if (entidad != null)
                             {
-                                if (entidad.Eliminado)
+                                if (libro.Eliminado)
                                 {
                                     librosRepository.Delete(entidad);
+                                    aviso = true;
                                 }
                                 else
                                 {
-                                    librosRepository.Update(entidad);
+
+                                    if (libro.Titulo != entidad.Titulo || libro.Autor != entidad.Autor || libro.Portada != entidad.Portada)
+                                    {
+                                        librosRepository.Update(entidad);
+                                        aviso = true;
+                                    }
                                 }
                             }
                         }
 
 
+                    }
+
+                    if (aviso)
+                    {
+
+                        _ = MainThread.InvokeOnMainThreadAsync(() =>
+                        {
+                            DatosActualizados?.Invoke();
+                        });
                     }
 
                     Preferences.Set("UltimaFechaActualizacion", response.Max(x => x.Fecha));

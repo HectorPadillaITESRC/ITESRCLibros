@@ -77,7 +77,12 @@ namespace ITESRCLibrosMAUI.ViewModels
         public LibrosViewModel()
         {
             ActualizarLibros();
-            _=service.GetLibros();
+            App.LibrosService.DatosActualizados += LibrosService_DatosActualizados;
+        }
+
+        private void LibrosService_DatosActualizados()
+        {
+            ActualizarLibros();
         }
 
         void ActualizarLibros()
